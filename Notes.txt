@@ -1,0 +1,27 @@
+Steps Takens:
+	12/31/2020
+		Start IntelliJ > new project > spring initializer > create defaul project the generates from https://start.spring.io > next>
+		
+		Group: tools.teboraw
+		Artifact: stracker
+		Description: Skill Tracker
+		next>
+		
+		Dependencies: check each
+			developer tools > spring boot devtools
+			sql > JPA, MySql and H2 and postgress
+			web > web
+		
+		Create Git repo 
+		
+		Open git bash and commit and push project to nw repo 
+			git init
+			git add .
+			git commit -m "first commit"
+			git remote add origin https://github.com/rompasaurus/SkillTracker.git
+			git push -u origin master
+			
+		Master Branch should act as the stable branch that has past testing
+		Create a new branch to act as the dev branch
+			git branch dev
+		
