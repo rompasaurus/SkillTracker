@@ -75,16 +75,58 @@ Steps Takens:
 			}
 			
 		Service spring example
-			@Service
-			public class ProjectService {
-
-				// Autowired Tells the application context to inject an instance of projectRepository here
+			@RestController
+			@RequestMapping("/api/project")//this define the endpoint that needs to be request for the method to be excuted here
+			public class ProjectController {
 				@Autowired
-				private ProjectRepository projectRepository;
+				private ProjectService projectService;
 
-				public Project saveOrUpdateProject(Project project) {
-					return projectRepository.save(project);
+				@PostMapping("")
+				public ResponseEntity<Project> createNewProject(@RequestBody Project project) {
+					Project project1 = projectService.saveOrUpdateProject(project);
+					return new ResponseEntity<>(project, HttpStatus.CREATED);
 				}
 			}
 
-	
+			
+		Testing api endpoints in soap 
+			create a new project test 
+			select post > Body > raw w/ JSON selected in dropdown 
+			in the body	:
+				{
+				"projectName": "Test",
+				"ProjectIdentifier": "IDTE",
+				"description":"a new project"
+				}	
+
+		Adding Data Validation:
+			Annotations can be added to the entity dao with messages to explicitly only allow non empty, data etc data to be submited
+			
+			by default spring doesnt include validation in the pom 
+			        <dependency>
+						<groupId>javax.validation</groupId>
+						<artifactId>validation-api</artifactId>
+						<version>2.0.1.Final</version>
+					</dependency>
+			was added to allow for this 
+			
+			Examples of validation
+				@Id
+				@GeneratedValue(strategy = GenerationType.IDENTITY)
+				private Long id;
+				@NotBlank(message = "Project name is required")
+				private String projectName;
+				@NotBlank(message = "Project Identifier is required")
+				@Size(min = 4, max = 5, message = "Please use 4 to 5 characters")
+				@Column(unique = true, updatable = false)
+				private String projectIdentifier;
+				@NotBlank(message = "Bitch fill in the description")
+				private String description;
+				@JsonFormat(pattern = "yyyy-mm-dd")
+				private Date start_date;
+				@JsonFormat(pattern = "yyyy-mm-dd")
+				private Date end_date;
+				@JsonFormat(pattern = "yyyy-mm-dd")
+				private Date created_At;
+				@JsonFormat(pattern = "yyyy-mm-dd")
+				private Date updated_at;
