@@ -20,8 +20,71 @@ Steps Takens:
 			git commit -m "first commit"
 			git remote add origin https://github.com/rompasaurus/SkillTracker.git
 			git push -u origin master
+		
+		Cloning existing project to new environment 
+			open git console
+			cd to proper directory 
+			git clone https://github.com/rompasaurus/SkillTracker.git
 			
 		Master Branch should act as the stable branch that has past testing
 		Create a new branch to act as the dev branch
 			git branch dev
 		
+		
+	01/09/2021
+		Connecting to db config site 
+			http://localhost:8080/h2-console/login
+			
+		Data Access objects in spring  example:
+			package webproject.teboraw.stracker.domain;
+			@Entity //indicates the class will be a table within the database and will be generated as such through spring boot
+			public class Project {
+				@Id
+				@GeneratedValue(strategy = GenerationType.IDENTITY)
+				private Long id;
+				private String projectName;
+				private String projectIdentifier;
+				private String description;
+				private Date start_date;
+				private Date end_date;
+
+				private Date created_At;
+				private Date updated_at;
+
+				@PrePersist
+				protected void onCreate(){
+					this.created_At = new Date();
+				}
+
+				@PreUpdate
+				protected void  onUpdate() {
+					this.updated_at = new Date();
+				}
+				
+		Controller api example
+			@RestController
+			@RequestMapping("/api/project")//this define the endpoint that needs to be request for the method to be excuted here
+			public class ProjectController {
+				@Autowired
+				private ProjectService projectService;
+
+				@PostMapping("")
+				public ResponseEntity<Project> createNewProject(@RequestBody Project project) {
+					return new ResponseEntity<>(project, HttpStatus.CREATED);
+				}
+			}
+			
+		Service spring example
+			@Service
+			public class ProjectService {
+
+				// Autowired Tells the application context to inject an instance of projectRepository here
+				@Autowired
+				private ProjectRepository projectRepository;
+
+				public Project saveOrUpdateProject(Project project) {
+					return projectRepository.save(project);
+				}
+			}
+
+	

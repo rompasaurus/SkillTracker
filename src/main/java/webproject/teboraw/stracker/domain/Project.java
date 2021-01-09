@@ -3,6 +3,7 @@ package webproject.teboraw.stracker.domain;
 import javax.persistence.*;
 import java.util.Date;
 
+@Entity
 public class Project {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
